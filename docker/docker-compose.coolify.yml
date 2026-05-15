@@ -21,7 +21,7 @@ x-frappe-backend: &frappe_backend
 
 services:
   db:
-    image: mariadb:11.8
+    image: mariadb:10.6
     restart: ${RESTART_POLICY:-unless-stopped}
     command:
       - --character-set-server=utf8mb4
@@ -98,19 +98,8 @@ services:
         wait-for-it -t 180 redis-cache:6379;
         wait-for-it -t 180 redis-queue:6379;
 
-        echo "Waiting for Frappe global site config..."
-        start=$$(date +%s)
-        until \
-          [ -n "$$(jq -r '.db_host // empty' sites/common_site_config.json 2>/dev/null)" ] && \
-          [ -n "$$(jq -r '.redis_cache // empty' sites/common_site_config.json 2>/dev/null)" ] && \
-          [ -n "$$(jq -r '.redis_queue // empty' sites/common_site_config.json 2>/dev/null)" ];
-        do
-          sleep 5
-          if [ $$(( $$(date +%s) - start )) -gt 180 ]; then
-            echo "Could not find required keys in sites/common_site_config.json"
-            exit 1
-          fi
-        done
+        echo "Checking Frappe global site config..."
+        test -s sites/common_site_config.json
 
         if [ ! -f "sites/$$SITE_NAME/site_config.json" ]; then
           if [ -d "sites/$$SITE_NAME" ]; then
