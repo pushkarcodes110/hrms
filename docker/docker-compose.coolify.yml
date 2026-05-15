@@ -196,7 +196,7 @@ services:
     command: bench schedule
 
 volumes:
-  db-data:
+  db-data1:
   redis-queue-data:
   sites:
   logs:
