@@ -1,12 +1,10 @@
 x-frappe-image: &frappe_image
   image: ${FRAPPE_IMAGE:-hrms-coolify}:${FRAPPE_IMAGE_TAG:-latest}
   build:
-    context: .
-    dockerfile: Dockerfile.coolify
+    context: ..
+    dockerfile: docker/Dockerfile.coolify
     args:
       ERPNEXT_IMAGE: ${ERPNEXT_IMAGE:-frappe/erpnext:develop}
-      HRMS_REPO: ${HRMS_REPO:-https://github.com/pushkarcodes110/hrms}
-      HRMS_BRANCH: ${HRMS_BRANCH:-develop}
   pull_policy: ${PULL_POLICY:-build}
   restart: ${RESTART_POLICY:-unless-stopped}
 
@@ -167,7 +165,7 @@ services:
     environment:
       BACKEND: backend:8000
       SOCKETIO: websocket:9000
-      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-$${host}}
+      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-$$host}
       UPSTREAM_REAL_IP_ADDRESS: ${UPSTREAM_REAL_IP_ADDRESS:-127.0.0.1}
       UPSTREAM_REAL_IP_HEADER: ${UPSTREAM_REAL_IP_HEADER:-X-Forwarded-For}
       UPSTREAM_REAL_IP_RECURSIVE: ${UPSTREAM_REAL_IP_RECURSIVE:-off}

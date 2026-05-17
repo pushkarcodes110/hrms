@@ -4,9 +4,13 @@ FROM ${ERPNEXT_IMAGE}
 USER frappe
 WORKDIR /home/frappe/frappe-bench
 
-ARG HRMS_REPO=https://github.com/pushkarcodes110/hrms
-ARG HRMS_BRANCH=develop
+COPY --chown=frappe:frappe . apps/hrms
 
-RUN bench get-app --branch "${HRMS_BRANCH}" "${HRMS_REPO}" \
+RUN echo "Base apps before HRMS install:" \
+	&& ls -1 apps \
+	&& test -d apps/frappe \
+	&& test -d apps/erpnext \
+	&& ./env/bin/pip install --no-cache-dir --use-pep517 -e apps/hrms \
+	&& yarn --cwd apps/hrms install --check-files \
 	&& bench build --app hrms \
 	&& rm -rf apps/hrms/.git

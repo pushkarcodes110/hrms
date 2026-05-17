@@ -1,0 +1,16 @@
+.git
+.github
+.DS_Store
+node_modules
+frontend/node_modules
+roster/node_modules
+frappe-ui/node_modules
+dist
+__pycache__
+*.pyc
+*.egg-info
+hrms/public/dist
+hrms/public/node_modules
+hrms/public/frontend
+hrms/public/roster
+docker/.env

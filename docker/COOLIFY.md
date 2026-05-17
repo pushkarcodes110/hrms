@@ -18,15 +18,15 @@ Copy the values from `.env.coolify.example` into Coolify's environment variable 
 
 This compose file builds a custom runtime image with both ERPNext and HRMS. HRMS depends on ERPNext internally, even when the deployment is intended to be used as Frappe HR.
 
-For the repository's `develop` branch, the defaults are:
+For the repository's `develop` branch, the default ERPNext base image is:
 
 ```text
 ERPNEXT_IMAGE=frappe/erpnext:develop
-HRMS_REPO=https://github.com/pushkarcodes110/hrms
-HRMS_BRANCH=develop
 ```
 
-For a versioned production deployment, set matching versions for both apps, for example `frappe/erpnext:v15.x.x` with `HRMS_BRANCH=version-15`.
+Coolify copies this repository's checked-out HRMS source into that ERPNext image during the Docker build.
+
+For a versioned production deployment, set `ERPNEXT_IMAGE` to a matching ERPNext image tag for your HRMS branch.
 
 ## Troubleshooting
 
