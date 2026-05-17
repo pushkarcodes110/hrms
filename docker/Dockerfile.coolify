@@ -16,11 +16,15 @@ RUN echo "Base apps before HRMS install:" \
 	&& test -d apps/erpnext \
 	&& test -f apps/hrms/hrms/hooks.py
 
+# HRMS uses Frappe's v14+ bundle files. The legacy build.json in this repo
+# references public/js/utils.js, which is not present and can break bench build.
+RUN printf "{}\n" > apps/hrms/hrms/public/build.json
+
 RUN ./env/bin/pip install --no-cache-dir --use-pep517 -e apps/hrms
 
 RUN yarn --cwd apps/hrms install --check-files
 
-RUN bench build --app hrms
+RUN NODE_OPTIONS=--max-old-space-size=2048 bench build --app hrms
 
 RUN cp -r sites/assets ./assets \
 	&& rm -rf sites/assets \
