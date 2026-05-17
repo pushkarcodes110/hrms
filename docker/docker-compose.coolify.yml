@@ -63,7 +63,10 @@ services:
     command:
       - >
         set -e;
-        ls -1 apps > sites/apps.txt;
+        test -d apps/frappe;
+        test -d apps/erpnext;
+        test -d apps/hrms;
+        printf "frappe\nerpnext\nhrms\n" > sites/apps.txt;
         bench set-config -g db_host "$$DB_HOST";
         bench set-config -gp db_port "$$DB_PORT";
         bench set-config -g redis_cache "redis://$$REDIS_CACHE";
@@ -165,7 +168,7 @@ services:
     environment:
       BACKEND: backend:8000
       SOCKETIO: websocket:9000
-      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-$$host}
+      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-${SITE_NAME}}
       UPSTREAM_REAL_IP_ADDRESS: ${UPSTREAM_REAL_IP_ADDRESS:-127.0.0.1}
       UPSTREAM_REAL_IP_HEADER: ${UPSTREAM_REAL_IP_HEADER:-X-Forwarded-For}
       UPSTREAM_REAL_IP_RECURSIVE: ${UPSTREAM_REAL_IP_RECURSIVE:-off}

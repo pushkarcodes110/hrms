@@ -28,6 +28,8 @@ Coolify copies this repository's checked-out HRMS source into that ERPNext image
 
 For a versioned production deployment, set `ERPNEXT_IMAGE` to a matching ERPNext image tag for your HRMS branch.
 
+The image build intentionally splits Python install, JavaScript install, and asset build into separate Dockerfile steps. If Coolify fails during the image build, the reported Dockerfile line should identify which of those phases failed.
+
 ## Troubleshooting
 
 If the database logs show this after switching MariaDB versions:
