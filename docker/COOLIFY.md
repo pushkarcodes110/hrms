@@ -16,6 +16,18 @@ Coolify expects the compose location field to start with `/`. With the base dire
 
 Copy the values from `.env.coolify.example` into Coolify's environment variable UI and replace all placeholder passwords before deploying.
 
+This compose file builds a custom runtime image with both ERPNext and HRMS. HRMS depends on ERPNext internally, even when the deployment is intended to be used as Frappe HR.
+
+For the repository's `develop` branch, the defaults are:
+
+```text
+ERPNEXT_IMAGE=frappe/erpnext:develop
+HRMS_REPO=https://github.com/pushkarcodes110/hrms
+HRMS_BRANCH=develop
+```
+
+For a versioned production deployment, set matching versions for both apps, for example `frappe/erpnext:v15.x.x` with `HRMS_BRANCH=version-15`.
+
 ## Troubleshooting
 
 If the database logs show this after switching MariaDB versions:

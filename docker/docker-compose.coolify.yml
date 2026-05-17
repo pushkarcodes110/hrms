@@ -1,6 +1,13 @@
 x-frappe-image: &frappe_image
-  image: ${FRAPPE_IMAGE:-ghcr.io/frappe/hrms}:${FRAPPE_IMAGE_TAG:-stable}
-  pull_policy: ${PULL_POLICY:-always}
+  image: ${FRAPPE_IMAGE:-hrms-coolify}:${FRAPPE_IMAGE_TAG:-latest}
+  build:
+    context: .
+    dockerfile: Dockerfile.coolify
+    args:
+      ERPNEXT_IMAGE: ${ERPNEXT_IMAGE:-frappe/erpnext:develop}
+      HRMS_REPO: ${HRMS_REPO:-https://github.com/pushkarcodes110/hrms}
+      HRMS_BRANCH: ${HRMS_BRANCH:-develop}
+  pull_policy: ${PULL_POLICY:-build}
   restart: ${RESTART_POLICY:-unless-stopped}
 
 x-frappe-backend: &frappe_backend
@@ -196,7 +203,7 @@ services:
     command: bench schedule
 
 volumes:
-  db-data1:
+  db-data:
   redis-queue-data:
   sites:
   logs:

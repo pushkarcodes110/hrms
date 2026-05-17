@@ -1,0 +1,12 @@
+ARG ERPNEXT_IMAGE=frappe/erpnext:develop
+FROM ${ERPNEXT_IMAGE}
+
+USER frappe
+WORKDIR /home/frappe/frappe-bench
+
+ARG HRMS_REPO=https://github.com/pushkarcodes110/hrms
+ARG HRMS_BRANCH=develop
+
+RUN bench get-app --branch "${HRMS_BRANCH}" "${HRMS_REPO}" \
+	&& bench build --app hrms \
+	&& rm -rf apps/hrms/.git
